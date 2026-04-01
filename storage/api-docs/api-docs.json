@@ -1,0 +1,169 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Perpustakaan Penus API",
+        "contact": {
+            "name": "Dimas Maulana Ishaq",
+            "email": "dimasmaulanaishaq@example.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "Development Server"
+        }
+    ],
+    "paths": {
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Ambil semua data user",
+                "description": "Display a listing of the resource.",
+                "operationId": "ce757d6a9dd9f3bf15fabb6611112518",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Buat user baru",
+                "description": "Endpoint ini digunakan untuk meregistrasi user baru ke dalam sistem.",
+                "operationId": "2edced9da0aacd45fb946c2dea19c5a2",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Dimas Maulana Ishaq"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "dimasmaulanaishaq@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Akun berhasil dibuat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Dimas Maulana Ishaq"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "dimasmaulanaishaq@example.com"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2026-02-04T07:10:54.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2026-02-04T07:10:54.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Email sudah terdaftar",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The email has already been taken."
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "email": [
+                                                    "The email has already been taken."
+                                                ]
+                                            },
+                                            "additionalProperties": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/books": {
+            "get": {
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Ambil semua data buku",
+                "description": "Display a listing of the resource.",
+                "operationId": "a9d13283dfab262e97af3c914d51b7a8",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Users",
+            "description": "Users"
+        },
+        {
+            "name": "Books",
+            "description": "Books"
+        }
+    ]
+}
