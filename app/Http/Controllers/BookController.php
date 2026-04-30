@@ -35,9 +35,27 @@ class BookController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         //
+        $validated = $request->validate(
+            [
+                'judul' => 'required',
+                'penulis' => 'required',
+                'penerbit' => 'required',
+                'tahun_terbit' => 'required',
+                'status' => 'required',
+                'category_id'=>'required'
+            ]
+        );
+
+        $book = Book::create($validated);
+        return response()->json([
+            'success' => true,
+            'message' => 'Book created successfully',
+            'data' => $book
+
+        ], 201);
     }
 
     /**

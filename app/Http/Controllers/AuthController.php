@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use OpenApi\Attributes as OA;
 
 
@@ -78,7 +79,7 @@ class AuthController extends Controller
             new OA\Property(property: 'errors', type: 'object', additionalProperties: true, example: ['email' => ['The email has already been taken.']])
         ]
     ))]
-    public function create(Request $request)
+    public function register(Request $request)
     {
         //membuat user
         $validation = $request->validate(array(
@@ -99,6 +100,51 @@ class AuthController extends Controller
         ]);
 
         return response()->json($newUser, 201);
+    }
+
+    public function login(Request $request)
+    {
+        // 1. Validasi hanya email dan password
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        // 2. Cari user (Ingat: pakai where, bukan findBy)
+        $user = User::where('email', $credentials['email'])->first();
+
+        // 3. Verifikasi user dan password
+        if (! $user || ! Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'message' => 'Email atau password salah.'
+            ], 401);
+        }
+
+        // 4. Generate token dengan nama bebas (misal: "auth_token")
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'token' => $token,
+            'user' => $user
+        ]);
+    }
+    public function logout(Request $request)
+    {
+        // Retrieve the currently authenticated user
+        $user = $request->user();
+
+        if ($user) {
+            // Revoke the token that was used to authenticate the current request
+            $user->currentAccessToken()->delete();
+
+            return response()->json([
+                'message' => 'Successfully logged out.'
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'No active session found.'
+        ], 401);
     }
 
     /**

@@ -44,7 +44,7 @@
                 ],
                 "summary": "Buat user baru",
                 "description": "Endpoint ini digunakan untuk meregistrasi user baru ke dalam sistem.",
-                "operationId": "2edced9da0aacd45fb946c2dea19c5a2",
+                "operationId": "8a56853624e025573120a09a4c75d468",
                 "requestBody": {
                     "required": true,
                     "content": {
