@@ -60,11 +60,7 @@ class BookController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+     *
 
     /**
      * Display the specified resource.
@@ -72,15 +68,18 @@ class BookController extends Controller
     public function show(string $id)
     {
         //
+        $book = Book::find($id);
+        return response()->json([
+            'status' => 'success',
+            'data' => $book,
+            'message' => 'Data berhasil diambil'
+        ],200);
+
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -88,6 +87,13 @@ class BookController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $book = Book::find($id);
+        $book->update($request->all());
+        return response()->json([
+            'status' => 'success',
+            'data' => $book,
+            'message' => 'Data berhasil diupdate'
+        ],200);
     }
 
     /**
@@ -96,5 +102,12 @@ class BookController extends Controller
     public function destroy(string $id)
     {
         //
+        $book = Book::find($id);
+        $book->delete();
+        return response()->json([
+            'status' => 'success',
+            'data' => $book,
+            'message' => 'Data berhasil dihapus'
+        ],200);
     }
 }
