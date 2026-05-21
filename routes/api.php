@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -29,6 +30,18 @@ Route::middleware('auth:sanctum')->group(function () {
     // Category Routing
     // Add category
     Route::post('/categories', [CategoryController::class, 'create']);
+
+    Route::get('/transactions', [TransactionController::class, 'index']);       // Lihat semua riwayat
+    Route::get('/transactions/{id}', [TransactionController::class, 'show']);   // Detail 1 transaksi
+
+
+    // BAGIAN 2: Alur Utama Peminjaman (Bisa diakses oleh Member/Siswa)
+    Route::post('/transactions/pinjam', [TransactionController::class, 'store']); // Proses pinjam buku baru
+
+
+    // BAGIAN 3: Alur Pengembalian & Manajemen (Khusus Akses Pustakawan / Admin)
+    Route::put('/transactions/{id}/kembali', [TransactionController::class, 'update']); // Pengembalian & hitung denda
+    Route::delete('/transactions/{id}', [TransactionController::class, 'destroy']);
 });
 
 
